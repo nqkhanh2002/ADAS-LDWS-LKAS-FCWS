@@ -3,7 +3,7 @@
   <p align="center">
     <a href="https://www.youtube.com/channel/UCKaMI0RBxF26f6j0Q8RRyTw">View Demo</a>
     ·
-    <a href="[https://github.com/nqkhanh2002/Detecting-COVID-19-with-Chest-X-Ray-using-PyTorch/issues](https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars/issues)">Report Bug</a>
+    <a href="https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars/issues">Report Bug</a>
     ·
     <a href="https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars/pulls">Request Feature</a>
   </p>
