@@ -25,3 +25,11 @@ Bài toán triển khai theo 2 cách:
 2. Phương pháp mạng nơ-ron học sâu
 ------- 
 ## Phương pháp xử lý ảnh truyền thống
+Pipline:
+1. Tính toán ma trận hiệu chỉnh camera (camera calibration matrix) và hệ số méo hình ảnh (distortion coefficients).
+2. Áp dụng sự hiệu chỉnh méo cho ảnh gốc.
+3. Sử dụng các chuyển đổi màu sắc, độ dốc, vv, để tạo ra một hình ảnh nhị phân được ngưỡng.
+4. Áp dụng phép chuyển đổi góc nhìn để tạo ra một "góc nhìn chim" của hình ảnh.
+5. Phát hiện các pixel của làn đường và phù hợp để tìm ranh giới của làn đường.
+6. Xác định độ cong của làn đường và vị trí xe so với trung tâm.
+7. Chuyển đổi lại ranh giới của làn đường được phát hiện trở lại hình ảnh ban đầu và hiển thị ước tính số liệu của độ cong của làn đường và vị trí xe.
