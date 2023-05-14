@@ -1,4 +1,17 @@
-# Lane-Detection-for-Self-Driving-Cars
+<a name="readme-top"></a>
+<div align="center">
+  <p align="center">
+    <a href="https://www.youtube.com/channel/UCKaMI0RBxF26f6j0Q8RRyTw">View Demo</a>
+    ·
+    <a href="[https://github.com/nqkhanh2002/Detecting-COVID-19-with-Chest-X-Ray-using-PyTorch/issues](https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars/issues)">Report Bug</a>
+    ·
+    <a href="https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars/pulls">Request Feature</a>
+  </p>
+</div>
+
+<h1 align="center">Lane-Detection-for-Self-Driving-Cars</h1>
+<img src="intro_readme.png"> <br>
+
 Phát triển một giải pháp phát hiện và theo dõi làn đường cho xe tự lái. Đây là một phần quan trọng của hệ thống lái tự động, nhằm đảm bảo an toàn và hiệu quả cho người lái và hành khách trên đường.
 # Phương pháp
 Bài toán triển khai theo 2 cách:
