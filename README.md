@@ -18,7 +18,7 @@ Phát triển một giải pháp phát hiện và theo dõi làn đường cho x
 |-------|-------|-------|
 | 1 | Nguyễn Quốc Khánh | 20521452 |
 | 2 | Đinh Phương Nam | 20520641 |
-
+# Cấu trúc dự án
 # Phương pháp
 Bài toán triển khai theo 2 cách:
 1. Phương pháp xử lý ảnh truyền thống
