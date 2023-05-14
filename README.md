@@ -17,5 +17,8 @@ Phát triển một giải pháp phát hiện và theo dõi làn đường cho x
 Bài toán triển khai theo 2 cách:
 1. Phương pháp xử lý ảnh truyền thống
 2. Phương pháp mạng nơ-ron học sâu
+<<<<<<< Updated upstream
 -------
 ## Phương pháp xử lý ảnh truyền thống
+=======
+>>>>>>> Stashed changes
