@@ -21,7 +21,7 @@ Kho lưu trữ này phát triển một giải pháp phát hiện và theo dõi 
 | 2 | Đinh Phương Nam | 20520641 |
 # Cấu trúc dự án
 # Phương pháp
-Bài toán triển khai theo 2 cách:
+Bài toán triển khai gồm 3 phần: 
 1. Phương pháp xử lý ảnh truyền thống
 2. Phương pháp mạng nơ-ron học sâu
 3. Xây dựng giao diện người dùng (GUI) để sử dụng và so sánh 2 phương pháp 
