@@ -36,4 +36,4 @@ Bài toán triển khai theo 2 cách:
 7. Chuyển đổi lại ranh giới của làn đường được phát hiện trở lại hình ảnh ban đầu và hiển thị ước tính số liệu của độ cong của làn đường và vị trí xe.
 ## Phương pháp học sâu 
 1. Mô hình SCNN-Tensorflow
-
+## Xây dựng giao diện người dùng (GUI)
