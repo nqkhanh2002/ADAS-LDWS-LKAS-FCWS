@@ -44,8 +44,11 @@ pip install -r requirements.txt
 ```
 2. Chạy chương trình bằng lệnh trong file command_pipline.txt
 - main.py [--video] INPUT_PATH OUTPUT_PATH 
+
 Trong đó tham số INPUT_PATH là đường dẫn đến video hoặc ảnh đầu vào, OUTPUT_PATH là đường dẫn đến video hoặc ảnh đầu ra, [--video] là tham số để chương trình biết INPUT_PATH là video hay ảnh.
 - Ví dụ:
 ```
 python Image_Processing/main.py --video Test_Video/video_test_01.mp4 Results/output_test_01.mp4
 ```
+3. Báo cáo kỹ thuật trong file Report.pdf
+4. [Link colab cho triển khai nhanh source code](https://colab.research.google.com/drive/1ymFbIRuQhlgN0u20zoaH9lyR3gm5emF0?usp=sharing)
