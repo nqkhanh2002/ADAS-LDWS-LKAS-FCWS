@@ -4,6 +4,8 @@ import glob
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
+# termination criteria
+criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 class CameraCalibration():
     """ Class that calibrate camera using chessboard images.
 
@@ -24,6 +26,7 @@ class CameraCalibration():
         imgpoints = []
         
         # Coordinates of chessboard's corners in 3D
+        # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
         objp = np.zeros((nx*ny, 3), np.float32)
         objp[:,:2] = np.mgrid[0:nx, 0:ny].T.reshape(-1, 2)
         
@@ -37,8 +40,12 @@ class CameraCalibration():
             # Find chessboard corners
             ret, corners = cv2.findChessboardCorners(img, (nx, ny))
             if ret:
-                imgpoints.append(corners)
+                
+                corners2 = cv2.cornerSubPix(gray,corners, (11,11), (-1,-1), criteria)
                 objpoints.append(objp)
+                imgpoints.append(corners2)
+            # Draw and display the corners
+            # cv2.drawChessboardCorners(img, (7,6), corners, ret)
 
         shape = (img.shape[1], img.shape[0])
         ret, self.mtx, self.dist, _, _ = cv2.calibrateCamera(objpoints, imgpoints, shape, None, None)
