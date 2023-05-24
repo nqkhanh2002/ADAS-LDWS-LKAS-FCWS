@@ -5,12 +5,14 @@
     ·
     <a href="https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars/issues">Report Bug</a>
     ·
-    <a href="https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars/pulls">Request Feature</a>
+    <a href="https://github.com/nqkhanh2002/Lane Detection-for-Self-Driving-Cars/pulls">Request Feature</a>
   </p>
 </div>
 
-<h1 align="center">Lane-Detection-for-Self-Driving-Cars</h1>
-<img src="Image_Resrouces\intro_readme.png"> <br>
+<h1 align="center">PHÁT HIỆN LÀN ĐƯỜNG ỨNG DỤNG TRONG XE TỰ LÁI</h1>
+
+![GIF Example](https://user-images.githubusercontent.com/25371934/33930574-61018b38-dfbb-11e7-89bb-66bea1bbb021.gif)
+
 Phát hiện làn đường là một nhiệm vụ thị giác máy tính liên quan đến việc xác định ranh giới của các làn đường lái xe trong video hoặc hình ảnh về cảnh đường. Mục tiêu là định vị và theo dõi chính xác vạch kẻ đường trong thời gian thực, ngay cả trong những điều kiện khó khăn như ánh sáng kém, ánh sáng chói hoặc bố cục đường phức tạp.
 
 Kho lưu trữ này phát triển một giải pháp phát hiện và theo dõi làn đường cho xe tự lái. Đây là một phần quan trọng của hệ thống lái tự động, nhằm đảm bảo an toàn và hiệu quả cho người lái và hành khách trên đường.
