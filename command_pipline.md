@@ -8,9 +8,6 @@ python Image_Processing/main.py --video Test_Video/two_lane_white.mp4 Results/ou
 python Image_Processing/main.py --video Test_Video\solidYellowLeft.mp4 Results/solidYellowLeft.mp4
 python Image_Processing/main.py --video Test_Video\harder_challenge_video.mp4 Results/test.mp4
 
-
-
-
 * image
 python Image_Processing/main.py Test_Image\test1.jpg Results/output_test_1.jpg
 python Image_Processing/main.py Test_Image\test2.jpg Results/output_test_2.jpg
