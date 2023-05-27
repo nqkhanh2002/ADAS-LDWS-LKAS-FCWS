@@ -16,7 +16,7 @@ class PerspectiveTransformation:
                                (150, 720),     # bottom-left
                                (1200, 720),    # bottom-right
                                (770, 460)])    # top-right
-        self.dst = np.float32([(100, 0),        # top-left
+        self.dst = np.float32([(100, 0),
                                (100, 720),
                                (1100, 720),
                                (1100, 0)])

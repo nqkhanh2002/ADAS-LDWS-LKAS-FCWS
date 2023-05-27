@@ -23,6 +23,10 @@ from LaneLines import *
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from moviepy.editor import VideoFileClip
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+import tkinter as tk
+
 class FindLaneLines:
     """ This class is for parameter tunning.
 
@@ -35,10 +39,11 @@ class FindLaneLines:
         self.thresholding = Thresholding()
         self.transform = PerspectiveTransformation()
         self.lanelines = LaneLines()
-
+        
     def forward(self, img):
         out_img = np.copy(img)
         img = self.calibration.undistort(img)
+        # resize video
 
         img = self.thresholding.forward(img)
         img = self.transform.forward(img)
@@ -49,14 +54,48 @@ class FindLaneLines:
         out_img = cv2.addWeighted(out_img, 1, img, 0.6, 0)
         out_img = self.lanelines.plot(out_img)
         return out_img
+    def forward_image(self, img):
+        out_img = np.copy(img)
+        
+        fig, axs = plt.subplots(2, 3, figsize=(12, 8))  # Tạo subplot với kích thước 2x3
+        axs[0, 0].imshow(img)  # Hiển thị ảnh gốc
+        axs[0, 0].set_title('Original Image')
+
+        img = self.calibration.undistort(img)
+        axs[0, 1].imshow(img)  # Hiển thị ảnh gốc
+        axs[0, 1].set_title('Undistorted Image')
+
+        img = self.thresholding.forward(img)
+        axs[0, 2].imshow(img, cmap='gray')  # Hiển thị ảnh sau khi áp dụng thresholding
+        axs[0, 2].set_title('Thresholded Image')
+
+        img = self.transform.forward(img)
+        axs[1, 0].imshow(img, cmap='gray')  # Hiển thị ảnh sau khi áp dụng perspective transformation
+        axs[1, 0].set_title('Transformed Image')
+
+        img = self.lanelines.forward(img)
+        axs[1, 1].imshow(img, cmap='gray')  # Hiển thị ảnh sau khi xử lý lane lines
+        axs[1, 1].set_title('Lane Lines Image')
+
+        img = self.transform.backward(img)
+        out_img = cv2.addWeighted(out_img, 1, img, 0.6, 0)
+        out_img = self.lanelines.plot(out_img)
+        axs[1, 2].imshow(out_img)  # Hiển thị ảnh cuối cùng sau khi plot lane lines
+        axs[1, 2].set_title('Final Image with Lane Lines')
+
+        plt.tight_layout()  # Đảm bảo không bị trùng lấp subplot
+        plt.show()
+
+        return out_img
+
 
     def process_image(self, input_path, output_path):
         img = mpimg.imread(input_path)
-        out_img = self.forward(img)
+        out_img = self.forward_image(img)
         mpimg.imsave(output_path, out_img)
-        result = mpimg.imread(output_path)
-        plt.imshow(result)
-        plt.show()
+        # result = mpimg.imread(output_path)
+        # plt.imshow(result)
+        # plt.show()
 
     def process_video(self, input_path, output_path):
         clip = VideoFileClip(input_path)
@@ -89,7 +128,6 @@ class FindLaneLines:
                     forward = True
                 else:
                     forward = False
-
         cap.release()
         cv2.destroyAllWindows()
         
@@ -104,12 +142,6 @@ def main():
         findLaneLines.process_video(input, output)
     else:
         findLaneLines.process_image(input, output)
-    # input = 'Test_Video/video_test_01.mp4'
-    # output = 'Results/output.mp4'
-    # findLaneLines = FindLaneLines()
-    # findLaneLines.process_video(input, output)
 
 if __name__ == "__main__":
     main()
-
-    
