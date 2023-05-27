@@ -18,7 +18,7 @@ class LaneLines:
     def __init__(self):
         """Init Lanelines.
 
-        parameters:
+        Parameters:
             left_fit (np.array): Coefficients of polynomial that fit left lane
             right_fit (np.array): Coefficients of polynomial that fit right lane
             binary (np.array): binary image
@@ -38,7 +38,6 @@ class LaneLines:
         # self.left_curve_img = mpimg.imread('/content/Lane-Detection-for-Self-Driving-Cars/Image_Resrouces/retrai.png')
         # self.right_curve_img = mpimg.imread('/content/Lane-Detection-for-Self-Driving-Cars/Image_Resrouces/rephai.png')
         # self.keep_straight_img = mpimg.imread('/content/Lane-Detection-for-Self-Driving-Cars/Image_Resrouces/dithang.png')
-
         self.left_curve_img = cv2.normalize(src=self.left_curve_img, dst=None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8U)
         self.right_curve_img = cv2.normalize(src=self.right_curve_img, dst=None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8U)
         self.keep_straight_img = cv2.normalize(src=self.keep_straight_img, dst=None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8U)
@@ -110,7 +109,6 @@ class LaneLines:
             righty (np.array): y coordinates of right lane pixels
             out_img (np.array): A RGB image that use to display result later on.
         """
-        # 
         assert(len(img.shape) == 2)
 
         # Create an output image to draw on and visualize the result
@@ -196,7 +194,6 @@ class LaneLines:
         return out_img
 
     def plot(self, out_img):
-        # hiển thị tối đa 6 chữ số sau dấu thập phân
         np.set_printoptions(precision=6, suppress=True)
         lR, rR, pos = self.measure_curvature()
 
@@ -217,7 +214,7 @@ class LaneLines:
             self.dir.pop(0)
 
         W = 400
-        H = 500
+        H = 430
         widget = np.copy(out_img[:H, :W])
         widget //= 2
         widget[0,:] = [0, 0, 255]
@@ -227,47 +224,37 @@ class LaneLines:
         out_img[:H, :W] = widget
 
         direction = max(set(self.dir), key = self.dir.count)
-        msg = "Keep going straight"
+        msg = "Keep Straight Ahead"
         curvature_msg = "Curvature = {:.0f} m".format(min(lR, rR))
         if direction == 'L':
             y, x = self.left_curve_img[:,:,3].nonzero()
             out_img[y, x-100+W//2] = self.left_curve_img[y, x, :3]
-            msg = "Left curve ahead"
+            msg = "Left Curve Ahead"
         if direction == 'R':
             y, x = self.right_curve_img[:,:,3].nonzero()
             out_img[y, x-100+W//2] = self.right_curve_img[y, x, :3]
-            msg = "Right curve ahead"
+            msg = "Right Curve Ahead"
         if direction == 'F':
             y, x = self.keep_straight_img[:,:,3].nonzero()
             out_img[y, x-100+W//2] = self.keep_straight_img[y, x, :3]
 
-        cv2.putText(out_img, msg, org=(10, 240), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
+        cv2.putText(out_img, msg, org=(40, 240), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
         if direction in 'LR':
-            cv2.putText(out_img, curvature_msg, org=(10, 280), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
+            cv2.putText(out_img, curvature_msg, org=(40, 280), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
 
-        if abs(pos) > 0.5:  # Nếu khoảng cách lệch lớn hơn 0.5 mét
-            cv2.putText(
-            out_img,
-            "Lane Deviation Detected",
-            org=(10, 400),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=1.2,
-            color=(0, 0, 255),  # Màu đỏ cho cảnh báo
-            thickness=2)
-        else:
-            cv2.putText(
+        cv2.putText(
             out_img,
             "Good Lane Keeping",
-            org=(10, 400),
+            org=(10, 350),
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
             fontScale=1.2,
-            color=(0, 255, 0),  # Màu xanh lá cây cho giữ làn tốt
+            color=(0, 255, 0),
             thickness=2)
 
         cv2.putText(
             out_img,
-            "Vehicle is {:.2f} meters from the center.".format(pos),
-            org=(10, 450),
+            "Vehicle is {:.2f}m away from center".format(pos),
+            org=(10, 400),
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
             fontScale=0.66,
             color=(255, 255, 255),
