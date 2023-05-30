@@ -39,7 +39,7 @@ class FindLaneLines:
         self.thresholding = Thresholding()
         self.transform = PerspectiveTransformation()
         self.lanelines = LaneLines()
-        
+    
     def forward(self, img):
         out_img = np.copy(img)
         img = self.calibration.undistort(img)
@@ -55,16 +55,25 @@ class FindLaneLines:
         out_img = self.lanelines.plot(out_img)
         return out_img
     def forward_image(self, img):
+        # rows, cols = img.shape[:2]
+        # Lấy chiều cao và chiều rộng của hình ảnh
+        height, width = img.shape[:2]
+        # Cắt đôi hình ảnh theo chiều dọc
+        half_height = height // 2
         out_img = np.copy(img)
         
+        # hiện thị ảnh crop
         fig, axs = plt.subplots(2, 3, figsize=(12, 8))  # Tạo subplot với kích thước 2x3
         axs[0, 0].imshow(img)  # Hiển thị ảnh gốc
         axs[0, 0].set_title('Original Image')
 
         img = self.calibration.undistort(img)
+        # img = img[half_height:, :]
+        cv2.imwrite('Results/cropped.png', img)
         axs[0, 1].imshow(img)  # Hiển thị ảnh gốc
         axs[0, 1].set_title('Undistorted Image')
-
+        
+        
         img = self.thresholding.forward(img)
         axs[0, 2].imshow(img, cmap='gray')  # Hiển thị ảnh sau khi áp dụng thresholding
         axs[0, 2].set_title('Thresholded Image')
@@ -87,6 +96,8 @@ class FindLaneLines:
         plt.show()
 
         return out_img
+
+
 
 
     def process_image(self, input_path, output_path):
