@@ -9,7 +9,9 @@ Options:
 -h --help                               show this screen
 --video                                 process video file instead of image
 """
-
+import os
+import cv2
+from sklearn.metrics import precision_score, recall_score, f1_score
 import numpy as np
 import matplotlib.image as mpimg
 import cv2
@@ -26,6 +28,16 @@ from moviepy.editor import VideoFileClip
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import tkinter as tk
+def extract_label_from_calib(calib_path):
+    with open(calib_path, 'r') as f:
+        content = f.read().strip().split('\n')
+
+    label_line = content[2].split(' ')[1:]  # Assuming P2 is in the third line (index 2)
+    label = [float(part) for part in label_line]  # Convert each part to float
+
+    return label
+
+
 
 class FindLaneLines:
     """ This class is for parameter tunning.
@@ -39,6 +51,7 @@ class FindLaneLines:
         self.thresholding = Thresholding()
         self.transform = PerspectiveTransformation()
         self.lanelines = LaneLines()
+        
     
     def forward(self, img):
         
@@ -137,6 +150,47 @@ class FindLaneLines:
         #             forward = False
         # cap.release()
         # cv2.destroyAllWindows()
+     
+    
+
+    def evaluate(self, dataset_path):
+        true_labels = []
+        predicted_labels = []
+        lane_detected = 0
+
+        calib_path = os.path.join(dataset_path, 'calib')
+        image_path = os.path.join(dataset_path, 'image_2')
+
+        for file in os.listdir(image_path):
+            if file.endswith('.png') and file.startswith('um_'):
+                image_file_path = os.path.join(image_path, file)
+                calib_file_path = 'um' + file[2:-4] + '.txt'
+                calib_file_path = os.path.join(calib_path, calib_file_path)
+
+                
+
+                try:
+                    predicted_label = self.process_image(image_file_path)
+                    predicted_labels.append(predicted_label)
+                    lane_detected += 1
+                except:
+                    continue
+                
+                true_label = extract_label_from_calib(calib_file_path)
+                true_labels.append(true_label)
+
+        true_labels = np.array(true_labels)
+        predicted_labels = np.array(predicted_labels)
+
+        precision = precision_score(true_labels, predicted_labels)
+        recall = recall_score(true_labels, predicted_labels)
+        f1 = f1_score(true_labels, predicted_labels)
+
+        # lane_detection_rate = lane_detected / len(predicted_labels)
+
+        # return precision, recall, f1, lane_detection_rate
+        return precision, recall, f1
+
         
 
 # def main():
