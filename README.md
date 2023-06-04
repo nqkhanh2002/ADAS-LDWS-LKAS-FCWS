@@ -67,6 +67,7 @@ The implementation problem consists of 3 parts:
 2. **Vehicle Detector**: [YOLOv8 (v8m & v8l)](https://github.com/ultralytics/ultralytics) [ONNX](https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection) 
 ## Build a user interface (GUI) to deliver a quick demo application
 ![GUI](Image_Resrouces/GUI.png)
+
 ## Usage
 1. Git clone this repository:
 ```
