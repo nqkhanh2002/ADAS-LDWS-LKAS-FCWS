@@ -224,30 +224,30 @@ class LaneLines:
         out_img[:H, :W] = widget
 
         direction = max(set(self.dir), key = self.dir.count)
-        msg = "Keep Straight Ahead"
+        msg = "LKAS: Keep Straight Ahead"
         curvature_msg = "Curvature = {:.0f} m".format(min(lR, rR))
         if direction == 'L':
             y, x = self.left_curve_img[:,:,3].nonzero()
             out_img[y, x-100+W//2] = self.left_curve_img[y, x, :3]
-            msg = "Left Curve Ahead"
+            msg = "LKAS: Left Curve Ahead"
         if direction == 'R':
             y, x = self.right_curve_img[:,:,3].nonzero()
             out_img[y, x-100+W//2] = self.right_curve_img[y, x, :3]
-            msg = "Right Curve Ahead"
+            msg = "LKAS: Right Curve Ahead"
         if direction == 'F':
             y, x = self.keep_straight_img[:,:,3].nonzero()
             out_img[y, x-100+W//2] = self.keep_straight_img[y, x, :3]
 
-        cv2.putText(out_img, msg, org=(40, 240), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
+        cv2.putText(out_img, msg, org=(40, 240), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.8, color=(255, 255, 255), thickness=2)
         if direction in 'LR':
-            cv2.putText(out_img, curvature_msg, org=(40, 280), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
+            cv2.putText(out_img, curvature_msg, org=(40, 280), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.8, color=(255, 255, 255), thickness=2)
 
         cv2.putText(
             out_img,
-            "Good Lane Keeping",
+            "LDWS: Good Lane Keeping",
             org=(10, 350),
             fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=1.2,
+            fontScale=0.8,
             color=(0, 255, 0),
             thickness=2)
 

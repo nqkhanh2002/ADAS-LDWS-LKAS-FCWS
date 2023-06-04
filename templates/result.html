@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>  
-<head>  
-	<title>RESULTS</title>  
-	<link rel="icon" type="image/x-icon" href="Image_Resrouces/car.ico">
+<html>
+<head>
+	<title>RESULTS</title>
+	<link rel="icon" type="image/x-icon" href="static\car.png">
 	<style>
 		.container {
 			display: flex;
@@ -19,6 +19,15 @@
 			background-color: #f9f9f9;
 			text-align: center;
 		}
+		.button-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.button-container button {
+			margin: 10px auto;
+		}
 
 		.image-container {
 			width: 45%;
@@ -34,9 +43,44 @@
 			display: block;
 			margin: 0 auto;
 		}
+
+		.button {
+			margin: 10px auto;
+			background-color: DodgerBlue;
+			color: white;
+			padding: 10px 20px;
+			text-align: center;
+			display: block;
+			font-size: 16px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		.button:hover {
+			background-color: RoyalBlue;
+		}
+
+		.home-link {
+			margin: 10px auto;
+			background-color: DodgerBlue;
+			color: white;
+			padding: 10px 20px;
+			text-align: center;
+			display: block;
+			font-size: 16px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			text-decoration: none;
+		}
+
+		.home-link:hover {
+			background-color: RoyalBlue;
+		}
 	</style>
-</head>  
-<body style="background-color:#b3ffb3;">  
+</head>
+<body style="background-color:#b3ffb3;">
 	
 	<header>
 		<div style="background-color: rgb(106, 90, 205); border-radius: 10px">
@@ -72,6 +116,9 @@
 				<p style="font-size:25px; text-align: center;">Your Input Image</p>
 				<img src="{{ img_in }}">
 			</div>
+			<div class="container">
+				<button class="button" onclick="goHome()">HOME</button>
+			</div>
 			<div class="image-container">
 				<p style="font-size:25px; text-align: center;">Your Output Image</p>
 				<img src="{{ img }}">
@@ -84,8 +131,9 @@
 					Your browser does not support the video tag.
 				</video>
 			</div>
-			<div style="text-align: center;">
-				<button onclick="compareVideos()">COMPARE</button>
+			<div class="button-container">
+				<button class="button" onclick="compareVideos()">COMPARE</button>
+				<button class="button" onclick="goHome()">HOME</button>
 			</div>
 			<div class="image-container">
 				<p style="font-size:25px; text-align: center;">Your Output Video</p>
@@ -99,7 +147,7 @@
 	<footer>
 		<p style="font-weight: bold; text-align: center; margin-top: 20px;">&copy; 2023 Nguyen Quoc Khanh. All rights reserved.</p>
 	</footer>
-</body>  
+</body>
 </html>
 <script>
     function compareVideos() {
@@ -115,5 +163,8 @@
         // Chạy lại cả hai video
         videoInput.play();
         videoOutput.play();
+    }
+	function goHome() {
+        window.location.href = "./";
     }
 </script>

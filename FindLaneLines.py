@@ -9,6 +9,7 @@ Options:
 -h --help                               show this screen
 --video                                 process video file instead of image
 """
+import time
 import os
 import cv2
 from sklearn.metrics import precision_score, recall_score, f1_score
@@ -51,6 +52,9 @@ class FindLaneLines:
         self.thresholding = Thresholding()
         self.transform = PerspectiveTransformation()
         self.lanelines = LaneLines()
+        self.start_time = None
+        self.frame_counter = 0
+        self.fps = 0.0
         
     
     def forward(self, img):
@@ -119,7 +123,29 @@ class FindLaneLines:
 
     def process_video(self, input_path, output_path):
         clip = VideoFileClip(input_path)
-        out_clip = clip.fl_image(self.forward)
+
+        self.start_time = time.time()  # Lưu thời điểm bắt đầu
+        self.frame_counter = 0  # Khởi tạo bộ đếm khung hình
+
+        def process_frame(frame):
+            self.frame_counter += 1  # Tăng bộ đếm khung hình
+
+            # Xử lý khung hình ở đây (gọi self.forward hoặc các hàm xử lý khác)
+            frame = self.forward(frame)
+
+            # Tính toán và hiển thị FPS
+            if self.frame_counter % 10 == 0:  # Cập nhật FPS mỗi 10 khung hình
+                elapsed_time = time.time() - self.start_time
+                self.fps = self.frame_counter / elapsed_time
+            cv2.putText(frame, f"FPS: {self.fps:.2f}", (frame.shape[1] - 250, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
+
+            # Vẽ ID frame lên khung hình
+            cv2.putText(frame, f"Frame ID: {self.frame_counter}", (frame.shape[1] - 250, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
+
+            return frame
+
+        # Áp dụng hàm xử lý khung hình lên video
+        out_clip = clip.fl_image(process_frame)
         out_clip.write_videofile(output_path, audio=False)
         # Hiển thị video sau khi xử lý
         # cap = cv2.VideoCapture(output_path)
