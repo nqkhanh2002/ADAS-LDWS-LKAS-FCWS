@@ -20,7 +20,6 @@
 This repository develops a lane detection and tracking solution for self-driving cars. It is a crucial component of an autonomous driving system, ensuring safety and efficiency for the driver and passengers on the road.
 
 # Project Structure
-> **This is an English version and an improved repository based on [the original repository](https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars), which represents the previous research results and my independent work.**
 
 # Pipline
 The implementation problem consists of 3 parts:
@@ -63,7 +62,7 @@ The implementation problem consists of 3 parts:
 > The detected lane boundaries, along with the calculated curvature and vehicle position, are mapped back onto the original undistorted image. This step visualizes the detected lanes and provides important information for an Advanced Driver Assistance System (ADAS). The displayed information may include LKAS (Lane Keeping Assist System) with Vietnamese traffic signs, LDWS (Lane Departure Warning System), the vehicle's position from the center, and other relevant details. Additionally, for testing purposes, the Frame ID and Frames Per Second (FPS) can be displayed in the upper right corner of the image.
 
 ## Deep Learning Method
-> **This method is still in development because I train the model on ONNX and TensorRT so I'm stuck with NVIDIA GPUs and I don't have time to solve this Pre-Entrance test.**
+> **This method is still in development because I train the model on ONNX and TensorRT so I'm stuck with NVIDIA GPUs.**
 1. **Lane Detector**: Ultra Fast Lane Detection ([V1](https://github.com/cfzd/Ultra-Fast-Lane-Detection) & [V2](https://github.com/cfzd/Ultra-Fast-Lane-Detection-v2)) on backbone ResNet (18 & 34)
 2. **Vehicle Detector**: [YOLOv8 (v8m & v8l)](https://github.com/ultralytics/ultralytics) [ONNX](https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection) 
 ## Build a user interface (GUI) to deliver a quick demo application
@@ -71,7 +70,7 @@ The implementation problem consists of 3 parts:
 ## Usage
 1. Git clone this repository:
 ```
-git clone https://github.com/nqkhanh2002/CinnamonBootcamp2023_PreEntrace.git
+git clone https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars.git
 ```
 2. Install the required libraries with the following command:
 ```
