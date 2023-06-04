@@ -1,56 +1,93 @@
 <a name="readme-top"></a>
 <div align="center">
   <p align="center">
-    <a href="https://www.youtube.com/channel/UCKaMI0RBxF26f6j0Q8RRyTw">View Demo</a>
+    <a href="https://www.youtube.com/watch?v=4aPsZ5zp0sk">View Demo</a>
     ·
-    <a href="https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars/issues">Report Bug</a>
+    <a href="https://github.com/nqkhanh2002/CinnamonBootcamp2023_PreEntrace/issues">Report Bug</a>
     ·
-    <a href="https://github.com/nqkhanh2002/Lane Detection-for-Self-Driving-Cars/pulls">Request Feature</a>
+    <a href="https://github.com/nqkhanh2002/CinnamonBootcamp2023_PreEntrace/pulls">Request Feature</a>
   </p>
 </div>
 
-<h1 align="center">PHÁT HIỆN LÀN ĐƯỜNG ỨNG DỤNG TRONG XE TỰ LÁI</h1>
+<h1 align="center">LANE DETECTION APPLICATION IN SELF-DRIVING CAR</h1>
 
-![GIF Example](https://user-images.githubusercontent.com/25371934/33930574-61018b38-dfbb-11e7-89bb-66bea1bbb021.gif)
+<div align="center">
+  <img src="Image_Resrouces/intro.gif" alt="Result Example" width="800px">
+</div>
 
-Phát hiện làn đường là một nhiệm vụ thị giác máy tính liên quan đến việc xác định ranh giới của các làn đường lái xe trong video hoặc hình ảnh về cảnh đường. Mục tiêu là định vị và theo dõi chính xác vạch kẻ đường trong thời gian thực, ngay cả trong những điều kiện khó khăn như ánh sáng kém, ánh sáng chói hoặc bố cục đường phức tạp.
+**Lane detection** is a computer vision task that involves identifying the boundaries of driving lanes in video or image scenes. The goal is to accurately locate and track the lane markings in real-time, even in challenging conditions such as low light, glare, or complex road layouts.
 
-Kho lưu trữ này phát triển một giải pháp phát hiện và theo dõi làn đường cho xe tự lái. Đây là một phần quan trọng của hệ thống lái tự động, nhằm đảm bảo an toàn và hiệu quả cho người lái và hành khách trên đường.
-# Thành viên nhóm 
-| STT | Họ và tên | MSSV |
-|-------|-------|-------|
-| 1 | Nguyễn Quốc Khánh | 20521452 |
-| 2 | Đinh Phương Nam | 20520641 |
-# Cấu trúc dự án
-# Phương pháp
-Bài toán triển khai gồm 3 phần: 
-1. Phương pháp xử lý ảnh truyền thống
-2. Phương pháp mạng nơ-ron học sâu
-3. Xây dựng giao diện người dùng (GUI) để sử dụng và so sánh 2 phương pháp 
+This repository develops a lane detection and tracking solution for self-driving cars. It is a crucial component of an autonomous driving system, ensuring safety and efficiency for the driver and passengers on the road.
+
+# Project Structure
+> **This is an English version and an improved repository based on [the original repository](https://github.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars), which represents the previous research results and my independent work.**
+
+# Pipline
+The implementation problem consists of 3 parts:
+1. Traditional image processing method
+2. Deep Learning Method
+3. Build a user interface (GUI) to deliver a quick demo application
 ------- 
-## Phương pháp xử lý ảnh truyền thống
-1. Tính toán ma trận hiệu chỉnh camera (camera calibration matrix) và hệ số méo hình ảnh (distortion coefficients).
-2. Áp dụng sự hiệu chỉnh méo cho ảnh gốc.
-3. Sử dụng các chuyển đổi màu sắc, độ dốc, vv, để tạo ra một hình ảnh nhị phân được ngưỡng.
-4. Áp dụng phép chuyển đổi góc nhìn để tạo ra một "góc nhìn chim" của hình ảnh.
-5. Phát hiện các pixel của làn đường và phù hợp để tìm ranh giới của làn đường.
-6. Xác định độ cong của làn đường và vị trí xe so với trung tâm.
-7. Chuyển đổi lại ranh giới của làn đường được phát hiện trở lại hình ảnh ban đầu và hiển thị ước tính số liệu của độ cong của làn đường và vị trí xe.
-## Phương pháp học sâu 
-1. Mô hình SCNN-Tensorflow
-## Xây dựng giao diện người dùng (GUI)
-## Cách chạy chương trình
-1. Cài đặt các thư viện cần thiết bằng lệnh sau:
+## Traditional image processing Method
+**1. Compute the camera calibration matrix and distortion coefficients.**
+
+> This step involves calibrating the camera used for capturing images or videos. By taking multiple calibration images of a chessboard pattern from different angles, the camera calibration matrix and distortion coefficients can be computed. These parameters are essential for correcting the distortion in the subsequent image processing steps.
+> 
+**2. Apply a distortion correction to raw images.**
+
+> Using the camera calibration matrix and distortion coefficients obtained in the previous step, the raw images captured by the camera can be undistorted. This correction ensures that straight lines appear straight in the image, reducing any distortion caused by the camera lens.
+
+**3. Apply a perspective transform to generate a “bird’s-eye view” of the image.**
+
+> Perspective transformation is applied to convert the undistorted image from a regular view to a top-down view, resembling a bird's-eye view. This transformation helps to focus on the lane region of interest and simplifies the subsequent lane detection process.
+
+**4. Use color transforms (HSL) to create a thresholded binary image.**
+
+> Different color spaces, gradient-based edge detection, and other image processing techniques are used to create a binary image where the lane markings are highlighted. Thresholding techniques are applied to identify the pixels that likely belong to the lanes based on their color or gradient properties.
+
+**5. Detect lane pixels and fit to find the lane boundary.**
+
+> Lane pixels are detected by applying a pixel-wise search or sliding window search on the thresholded binary image. The detected pixels are then used to fit a mathematical model (e.g., polynomial) that represents the lane boundary. This step determines the shape and position of the detected lanes.
+
+**6. Determine the curvature of the lane and vehicle position with respect to center.**
+
+> Using the fitted lane boundary, the curvature of the lane can be calculated. This provides valuable information about the curvature radius, which is essential for controlling the vehicle during self-driving. Additionally, the vehicle's position with respect to the lane center can be determined, allowing for appropriate adjustments in driving behavior.
+
+**7. Warp the detected lane boundaries back onto the original image and display information for ADAS System. Information displayed includes:**
+* **LKAS: Lane Keeping Assist System with Vietnamese traffic signs**
+* **LDWS: Lane Departure Warning System ((Not aiming to develop in this method but develop in Deep Learning method)**
+* **Vehicle position from center**
+* **And finally Frame ID and FPS are displayed in the upper right corner for testing**
+
+
+> The detected lane boundaries, along with the calculated curvature and vehicle position, are mapped back onto the original undistorted image. This step visualizes the detected lanes and provides important information for an Advanced Driver Assistance System (ADAS). The displayed information may include LKAS (Lane Keeping Assist System) with Vietnamese traffic signs, LDWS (Lane Departure Warning System), the vehicle's position from the center, and other relevant details. Additionally, for testing purposes, the Frame ID and Frames Per Second (FPS) can be displayed in the upper right corner of the image.
+
+## Deep Learning Method
+> **This method is still in development because I train the model on ONNX and TensorRT so I'm stuck with NVIDIA GPUs and I don't have time to solve this Pre-Entrance test.**
+1. **Lane Detector**: Ultra Fast Lane Detection ([V1](https://github.com/cfzd/Ultra-Fast-Lane-Detection) & [V2](https://github.com/cfzd/Ultra-Fast-Lane-Detection-v2)) on backbone ResNet (18 & 34)
+2. **Vehicle Detector**: [YOLOv8 (v8m & v8l)](https://github.com/ultralytics/ultralytics) [ONNX](https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection) 
+## Build a user interface (GUI) to deliver a quick demo application
+![GUI](Image_Resrouces/GUI.png)
+## Usage
+1. Git clone this repository:
+```
+git clone https://github.com/nqkhanh2002/CinnamonBootcamp2023_PreEntrace.git
+```
+2. Install the required libraries with the following command:
 ```
 pip install -r requirements.txt
 ```
-2. Chạy chương trình bằng lệnh trong file command_pipline.txt
-- main.py [--video] INPUT_PATH OUTPUT_PATH 
+3. Launch Flask interface
+ ```
+ python app.py
+ ```
+4. Go to the development server at [127.0.0.1:5000](http://127.0.0.1:5000/) in a web browser. Use **Ctrl + C** to exit the program.
+5. Demo setting process is available [here](https://www.youtube.com/watch?v=j-Rbf1Wvl6M&t=4s). Some test data (image and video) can be accessed [here](https://drive.google.com/drive/folders/1BtCvko4PB6_j2ljuAsCYnpVnhCQomFjg?usp=sharing).
 
-Trong đó tham số INPUT_PATH là đường dẫn đến video hoặc ảnh đầu vào, OUTPUT_PATH là đường dẫn đến video hoặc ảnh đầu ra, [--video] là tham số để chương trình biết INPUT_PATH là video hay ảnh.
-- Ví dụ:
-```
-python Image_Processing/main.py --video Test_Video/video_test_01.mp4 Results/output_test_01.mp4
-```
-3. Báo cáo kỹ thuật trong file Report.pdf
-4. [Link colab cho triển khai nhanh source code](https://colab.research.google.com/drive/1ymFbIRuQhlgN0u20zoaH9lyR3gm5emF0?usp=sharing)
+## Final Result
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=4aPsZ5zp0sk">
+    <img src="https://img.youtube.com/vi/4aPsZ5zp0sk/0.jpg" alt="Demo Video" width="480" height="360">
+  </a>
+</div>
+

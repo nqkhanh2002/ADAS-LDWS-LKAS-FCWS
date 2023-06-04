@@ -7,26 +7,11 @@ import matplotlib.pyplot as plt
 # termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 class CameraCalibration():
-    """ Class that calibrate camera using chessboard images.
-
-    Attributes:
-        mtx (np.array): Camera matrix 
-        dist (np.array): Distortion coefficients
-    """
     def __init__(self, image_dir, nx, ny, debug=False):
-        """ Init CameraCalibration.
-
-        Parameters:
-            image_dir (str): path to folder contains chessboard images
-            nx (int): width of chessboard (number of squares)
-            ny (int): height of chessboard (number of squares)
-        """
         fnames = glob.glob("{}/*".format(image_dir))
         objpoints = []
         imgpoints = []
         
-        # Coordinates of chessboard's corners in 3D
-        # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
         objp = np.zeros((nx*ny, 3), np.float32)
         objp[:,:2] = np.mgrid[0:nx, 0:ny].T.reshape(-1, 2)
         
@@ -54,12 +39,4 @@ class CameraCalibration():
             raise Exception("Unable to calibrate camera")
 
     def undistort(self, img):
-        """ Return undistort image.
-
-        Parameters:
-            img (np.array): Input image
-
-        Returns:
-            Image (np.array): Undistorted image
-        """
         return cv2.undistort(img, self.mtx, self.dist, None, self.mtx)

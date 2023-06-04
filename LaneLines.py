@@ -3,26 +3,24 @@ import numpy as np
 import matplotlib.image as mpimg
 
 def hist(img):
+    """
+    Compute the histogram of the bottom half of the input image.
+
+    Args:
+        img (np.array): Input image.
+
+    Returns:
+        np.array: Histogram of pixel intensities.
+    """
     bottom_half = img[img.shape[0]//2:,:]
     return np.sum(bottom_half, axis=0)
 
 class LaneLines:
-    """ Class containing information about detected lane lines.
-
-    Attributes:
-        left_fit (np.array): Coefficients of a polynomial that fit left lane line
-        right_fit (np.array): Coefficients of a polynomial that fit right lane line
-        parameters (dict): Dictionary containing all parameters needed for the pipeline
-        debug (boolean): Flag for debug/normal mode
     """
-    def __init__(self):
-        """Init Lanelines.
+    Class for detecting and tracking lane lines in an image.
+    """
 
-        Parameters:
-            left_fit (np.array): Coefficients of polynomial that fit left lane
-            right_fit (np.array): Coefficients of polynomial that fit right lane
-            binary (np.array): binary image
-        """
+    def __init__(self):
         self.left_fit = None
         self.right_fit = None
         self.binary = None
@@ -34,10 +32,7 @@ class LaneLines:
         self.left_curve_img = mpimg.imread(r'Image_Resrouces\retrai.png')
         self.right_curve_img = mpimg.imread(r'Image_Resrouces\rephai.png')
         self.keep_straight_img = mpimg.imread(r'Image_Resrouces\dithang.png')
-        # For google colab
-        # self.left_curve_img = mpimg.imread('/content/Lane-Detection-for-Self-Driving-Cars/Image_Resrouces/retrai.png')
-        # self.right_curve_img = mpimg.imread('/content/Lane-Detection-for-Self-Driving-Cars/Image_Resrouces/rephai.png')
-        # self.keep_straight_img = mpimg.imread('/content/Lane-Detection-for-Self-Driving-Cars/Image_Resrouces/dithang.png')
+
         self.left_curve_img = cv2.normalize(src=self.left_curve_img, dst=None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8U)
         self.right_curve_img = cv2.normalize(src=self.right_curve_img, dst=None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8U)
         self.keep_straight_img = cv2.normalize(src=self.keep_straight_img, dst=None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8U)
@@ -45,34 +40,35 @@ class LaneLines:
         # HYPERPARAMETERS
         # Number of sliding windows
         self.nwindows = 9
-        # Width of the the windows +/- margin
+        # Width of the windows +/- margin
         self.margin = 100
-        # Mininum number of pixels found to recenter window
+        # Minimum number of pixels found to recenter window
         self.minpix = 50
 
     def forward(self, img):
-        """Take a image and detect lane lines.
+        """
+        Detect and track lane lines in the input image.
 
-        Parameters:
-            img (np.array): An binary image containing relevant pixels
+        Args:
+            img (np.array): Input image.
 
         Returns:
-            Image (np.array): An RGB image containing lane lines pixels and other details
+            np.array: Binary image with the detected lane lines.
         """
         self.extract_features(img)
         return self.fit_poly(img)
 
     def pixels_in_window(self, center, margin, height):
-        """ Return all pixel that in a specific window
+        """
+        Get the x and y positions of pixels within a window around the specified center.
 
-        Parameters:
-            center (tuple): coordinate of the center of the window
-            margin (int): half width of the window
-            height (int): height of the window
+        Args:
+            center (tuple): Center of the window.
+            margin (int): Half the width of the window.
+            height (int): Height of the window.
 
         Returns:
-            pixelx (np.array): x coordinates of pixels that lie inside the window
-            pixely (np.array): y coordinates of pixels that lie inside the window
+            tuple: Arrays of x and y positions of pixels within the window.
         """
         topleft = (center[0]-margin, center[1]-height//2)
         bottomright = (center[0]+margin, center[1]+height//2)
@@ -82,32 +78,30 @@ class LaneLines:
         return self.nonzerox[condx&condy], self.nonzeroy[condx&condy]
 
     def extract_features(self, img):
-        """ Extract features from a binary image
+        """
+        Extract features for lane line detection.
 
-        Parameters:
-            img (np.array): A binary image
+        Args:
+            img (np.array): Input image.
         """
         self.img = img
-        # Height of of windows - based on nwindows and image shape
+        # Height of windows - based on nwindows and image shape
         self.window_height = np.int(img.shape[0]//self.nwindows)
 
-        # Identify the x and y positions of all nonzero pixel in the image
+        # Identify the x and y positions of all nonzero pixels in the image
         self.nonzero = img.nonzero()
         self.nonzerox = np.array(self.nonzero[1])
         self.nonzeroy = np.array(self.nonzero[0])
 
     def find_lane_pixels(self, img):
-        """Find lane pixels from a binary warped image.
+        """
+        Find lane pixels using a sliding window approach.
 
-        Parameters:
-            img (np.array): A binary warped image
+        Args:
+            img (np.array): Binary image.
 
         Returns:
-            leftx (np.array): x coordinates of left lane pixels
-            lefty (np.array): y coordinates of left lane pixels
-            rightx (np.array): x coordinates of right lane pixels
-            righty (np.array): y coordinates of right lane pixels
-            out_img (np.array): A RGB image that use to display result later on.
+            tuple: Lists of x and y positions of left and right lane pixels, and the output image.
         """
         assert(len(img.shape) == 2)
 
@@ -119,12 +113,12 @@ class LaneLines:
         leftx_base = np.argmax(histogram[:midpoint])
         rightx_base = np.argmax(histogram[midpoint:]) + midpoint
 
-        # Current position to be update later for each window in nwindows
+        # Current position to be updated later for each window in nwindows
         leftx_current = leftx_base
         rightx_current = rightx_base
         y_current = img.shape[0] + self.window_height//2
 
-        # Create empty lists to reveice left and right lane pixel
+        # Create empty lists to receive left and right lane pixel coordinates
         leftx, lefty, rightx, righty = [], [], [], []
 
         # Step through the windows one by one
@@ -149,16 +143,17 @@ class LaneLines:
 
         return leftx, lefty, rightx, righty, out_img
 
-    def fit_poly(self, img):
-        """Find the lane line from an image and draw it.
 
-        Parameters:
-            img (np.array): a binary warped image
+    def fit_poly(self, img):
+        """
+        Fit polynomial curves to the detected lane pixels.
+
+        Args:
+            img (np.array): Binary image.
 
         Returns:
-            out_img (np.array): a RGB image that have lane line drawn on that.
+            np.array: Output image with polynomial curves plotted on it.
         """
-
         leftx, lefty, rightx, righty, out_img = self.find_lane_pixels(img)
 
         if len(lefty) > 1500:
@@ -193,7 +188,17 @@ class LaneLines:
 
         return out_img
 
+
     def plot(self, out_img):
+        """
+        Plot lane lines and text overlays on the image.
+
+        Args:
+            out_img (np.array): Image with polynomial curves plotted on it.
+
+        Returns:
+            np.array: Image with lane lines, text overlays, and direction indicators.
+        """
         np.set_printoptions(precision=6, suppress=True)
         lR, rR, pos = self.measure_curvature()
 
@@ -209,7 +214,7 @@ class LaneLines:
             self.dir.append('L')
         else:
             self.dir.append('R')
-        
+
         if len(self.dir) > 10:
             self.dir.pop(0)
 
@@ -217,64 +222,57 @@ class LaneLines:
         H = 430
         widget = np.copy(out_img[:H, :W])
         widget //= 2
-        widget[0,:] = [0, 0, 255]
-        widget[-1,:] = [0, 0, 255]
-        widget[:,0] = [0, 0, 255]
-        widget[:,-1] = [0, 0, 255]
+        widget[0, :] = [0, 0, 255]
+        widget[-1, :] = [0, 0, 255]
+        widget[:, 0] = [0, 0, 255]
+        widget[:, -1] = [0, 0, 255]
         out_img[:H, :W] = widget
 
-        direction = max(set(self.dir), key = self.dir.count)
+        direction = max(set(self.dir), key=self.dir.count)
         msg = "LKAS: Keep Straight Ahead"
         curvature_msg = "Curvature = {:.0f} m".format(min(lR, rR))
         if direction == 'L':
-            y, x = self.left_curve_img[:,:,3].nonzero()
-            out_img[y, x-100+W//2] = self.left_curve_img[y, x, :3]
+            y, x = self.left_curve_img[:, :, 3].nonzero()
+            out_img[y, x - 100 + W // 2] = self.left_curve_img[y, x, :3]
             msg = "LKAS: Left Curve Ahead"
         if direction == 'R':
-            y, x = self.right_curve_img[:,:,3].nonzero()
-            out_img[y, x-100+W//2] = self.right_curve_img[y, x, :3]
+            y, x = self.right_curve_img[:, :, 3].nonzero()
+            out_img[y, x - 100 + W // 2] = self.right_curve_img[y, x, :3]
             msg = "LKAS: Right Curve Ahead"
         if direction == 'F':
-            y, x = self.keep_straight_img[:,:,3].nonzero()
-            out_img[y, x-100+W//2] = self.keep_straight_img[y, x, :3]
+            y, x = self.keep_straight_img[:, :, 3].nonzero()
+            out_img[y, x - 100 + W // 2] = self.keep_straight_img[y, x, :3]
 
         cv2.putText(out_img, msg, org=(40, 240), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.8, color=(255, 255, 255), thickness=2)
         if direction in 'LR':
             cv2.putText(out_img, curvature_msg, org=(40, 280), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.8, color=(255, 255, 255), thickness=2)
 
-        cv2.putText(
-            out_img,
-            "LDWS: Good Lane Keeping",
-            org=(10, 350),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=0.8,
-            color=(0, 255, 0),
-            thickness=2)
+        cv2.putText(out_img, "LDWS: Good Lane Keeping", org=(10, 350), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.8, color=(0, 255, 0), thickness=2)
 
-        cv2.putText(
-            out_img,
-            "Vehicle is {:.2f}m away from center".format(pos),
-            org=(10, 400),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=0.66,
-            color=(255, 255, 255),
-            thickness=2)
+        cv2.putText(out_img, "Vehicle is {:.2f}m away from center".format(pos), org=(10, 400), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.66, color=(255, 255, 255), thickness=2)
 
         return out_img
 
+
     def measure_curvature(self):
-        ym = 30/720
-        xm = 3.7/700
+        """
+        Measure the curvature of the lane lines.
+
+        Returns:
+            Tuple: Left lane curvature, right lane curvature, and position of the vehicle from the lane center.
+        """
+        ym = 30 / 720
+        xm = 3.7 / 700
 
         left_fit = self.left_fit.copy()
         right_fit = self.right_fit.copy()
         y_eval = 700 * ym
 
         # Compute R_curve (radius of curvature)
-        left_curveR =  ((1 + (2*left_fit[0] *y_eval + left_fit[1])**2)**1.5)  / np.absolute(2*left_fit[0])
-        right_curveR = ((1 + (2*right_fit[0]*y_eval + right_fit[1])**2)**1.5) / np.absolute(2*right_fit[0])
+        left_curveR = ((1 + (2 * left_fit[0] * y_eval + left_fit[1]) ** 2) ** 1.5) / np.absolute(2 * left_fit[0])
+        right_curveR = ((1 + (2 * right_fit[0] * y_eval + right_fit[1]) ** 2) ** 1.5) / np.absolute(2 * right_fit[0])
 
-        xl = np.dot(self.left_fit, [700**2, 700, 1])
-        xr = np.dot(self.right_fit, [700**2, 700, 1])
-        pos = (1280//2 - (xl+xr)//2)*xm
-        return left_curveR, right_curveR, pos 
+        xl = np.dot(self.left_fit, [700 ** 2, 700, 1])
+        xr = np.dot(self.right_fit, [700 ** 2, 700, 1])
+        pos = (1280 // 2 - (xl + xr) // 2) * xm
+        return left_curveR, right_curveR, pos
