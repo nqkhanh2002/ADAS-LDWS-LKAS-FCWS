@@ -63,7 +63,7 @@ class SingleCamDistanceMeasure(object):
 					point_y = ymax
 
 					try :
-						distance = (self.RefSizeDict[label][0] * self.f)/ (ymax - ymin)
+						distance = (self.RefSizeDict[label][0] * self.f) / (ymax - ymin)
 						distance = distance/12*0.3048 # 1ft = 0.3048 m
 						self.distance_points.append([point_x, point_y, distance])
 					except :

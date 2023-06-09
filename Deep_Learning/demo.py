@@ -1,7 +1,7 @@
 import cv2, time
 import numpy as np
 import logging
-import pycuda.driver as drv
+# import pycuda.driver as drv
 
 from taskConditions import TaskConditions, Logger
 from ObjectDetector.yoloDetector import YoloDetector
@@ -24,8 +24,8 @@ object_config = {
 	"model_path": './ObjectDetector/models/yolov8l-coco.trt',
 	"model_type" : ObjectModelType.YOLOV8,
 	"classes_path" : './ObjectDetector/models/coco_label.txt',
-	"box_score" : 0.4,
-	"box_nms_iou" : 0.45
+	"box_score" : 0.6,
+	"box_nms_iou" : 0.5
 }
 
 # Priority : FCWS > LDWS > LKAS
@@ -232,7 +232,7 @@ if __name__ == "__main__":
 	#					Initialize Class
 	#==========================================================
 	LOGGER.info("[Pycuda] Cuda Version: {}".format(drv.get_version()))
-	LOGGER.info("[Driver] Cuda Version: {}".format(drv.get_driver_version()))
+	LOGGER.info("[Driver] Cuda Version: {}".format(drv.get_driver_version()))	
 
 	# lane detection model
 	LOGGER.info("UfldDetector Model Type : {}".format(lane_config["model_type"].name))

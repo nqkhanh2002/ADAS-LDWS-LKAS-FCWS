@@ -62,10 +62,47 @@ The implementation problem consists of 3 parts:
 > The detected lane boundaries, along with the calculated curvature and vehicle position, are mapped back onto the original undistorted image. This step visualizes the detected lanes and provides important information for an Advanced Driver Assistance System (ADAS). The displayed information may include LKAS (Lane Keeping Assist System) with Vietnamese traffic signs, LDWS (Lane Departure Warning System), the vehicle's position from the center, and other relevant details. Additionally, for testing purposes, the Frame ID and Frames Per Second (FPS) can be displayed in the upper right corner of the image.
 
 ## Deep Learning Method
-> **This method is still in development because I train the model on ONNX and TensorRT so I'm stuck with NVIDIA GPUs.**
 1. **Lane Detector**: Ultra Fast Lane Detection ([V1](https://github.com/cfzd/Ultra-Fast-Lane-Detection) & [V2](https://github.com/cfzd/Ultra-Fast-Lane-Detection-v2)) on backbone ResNet (18 & 34)
 2. **Vehicle Detector**: [YOLOv8 (v8m & v8l)](https://github.com/ultralytics/ultralytics) [ONNX](https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection) 
 3. [Pretrained model](https://drive.google.com/drive/folders/1OhFZO2z_ZpVVVMxziD4NRAicS0eMS9zA?usp=sharing)
+4. Requirements
+- NIVIDA GPU for TenssoRT
+- Othe dependencies: [requirements.txt](requirements.txt)
+
+ * ***Video inference*** :
+
+   * Setting Config :
+     > Note : can support onnx/tensorRT format model. But it needs to match the same model type.
+
+    ```python
+    lane_config = {
+     "model_path": "./TrafficLaneDetector/models/culane_res18.trt",
+     "model_type" : LaneModelType.UFLDV2_CULANE
+    }
+
+    object_config = {
+     "model_path": './ObjectDetector/models/yolov8l-coco.trt',
+     "model_type" : ObjectModelType.YOLOV8,
+     "classes_path" : './ObjectDetector/models/coco_label.txt',
+     "box_score" : 0.4,
+     "box_nms_iou" : 0.45
+    }
+   ```
+   | Target          | Model Type                       |  Describe                                         | 
+   | :-------------: |:-------------------------------- | :------------------------------------------------ | 
+   | Lanes           | `LaneModelType.UFLD_TUSIMPLE`    | Support Tusimple data with ResNet18 backbone.     | 
+   | Lanes           | `LaneModelType.UFLD_CULANE`      | Support CULane data with ResNet18 backbone.       | 
+   | Lanes           | `LaneModelType.UFLDV2_TUSIMPLE`  | Support Tusimple data with ResNet18/34 backbone.  |
+   | Lanes           | `LaneModelType.UFLDV2_CULANE`    | Support CULane data with ResNet18/34 backbone.    | 
+   | Object          | `ObjectModelType.YOLOV5`         | Support yolov5n/s/m/l/x model.                    | 
+   | Object          | `ObjectModelType.YOLOV5_LITE`    | Support yolov5lite-e/s/c/g model.                 | 
+   | Object          | `ObjectModelType.YOLOV8`         | Support yolov8n/s/m/l/x model.                    | 
+   
+   * Run :
+   
+    ```
+    python demo.py
+    ```
 ## Build a user interface (GUI) to deliver a quick demo application
 
 ![GUI](Image_Resrouces/GUI.png)
