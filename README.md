@@ -28,6 +28,11 @@ The implementation problem consists of 3 parts:
 3. Build a user interface (GUI) to deliver a quick demo application
 ------- 
 ## Traditional image processing Method
+
+> **PIPLINE**
+
+![pipline](Image_Resrouces/pipline_1.png)
+
 **1. Compute the camera calibration matrix and distortion coefficients.**
 
 > This step involves calibrating the camera used for capturing images or videos. By taking multiple calibration images of a chessboard pattern from different angles, the camera calibration matrix and distortion coefficients can be computed. These parameters are essential for correcting the distortion in the subsequent image processing steps.
@@ -64,10 +69,10 @@ The implementation problem consists of 3 parts:
 ## Deep Learning Method
 1. **Lane Detector**: Ultra Fast Lane Detection ([V1](https://github.com/cfzd/Ultra-Fast-Lane-Detection) & [V2](https://github.com/cfzd/Ultra-Fast-Lane-Detection-v2)) on backbone ResNet (18 & 34)
 2. **Vehicle Detector**: [YOLOv8 (v8m & v8l)](https://github.com/ultralytics/ultralytics) [ONNX](https://github.com/ibaiGorordo/ONNX-YOLOv8-Object-Detection) 
-3. [Pretrained model](https://drive.google.com/drive/folders/1OhFZO2z_ZpVVVMxziD4NRAicS0eMS9zA?usp=sharing)
-4. Requirements
+3. **Pretrained model** can be accessed [here](https://drive.google.com/drive/folders/1OhFZO2z_ZpVVVMxziD4NRAicS0eMS9zA?usp=sharing)
+4. **Requirements**
 - NIVIDA GPU for TenssoRT
-- Othe dependencies: [requirements.txt](requirements.txt)
+- Others dependencies: [requirements.txt](requirements.txt)
 
  * ***Video inference*** :
 
@@ -103,6 +108,15 @@ The implementation problem consists of 3 parts:
     ```
     python demo.py
     ```
+ 5. **Results**
+ - Deep Learning 
+
+![DemoDL](Image_Resrouces/DL_demo1.gif)
+![DemoDL_1](Image_Resrouces/DL_demo2.gif)
+![DemoDL_2](Image_Resrouces/DemoDL2.gif)
+
+> **The best type of model for the problem ULFD2_CULANE_RES18/34 and YOLO8l !**
+
 ## Build a user interface (GUI) to deliver a quick demo application
 
 ![GUI](Image_Resrouces/GUI.png)
