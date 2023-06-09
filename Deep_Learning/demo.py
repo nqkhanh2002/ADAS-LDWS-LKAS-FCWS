@@ -114,7 +114,7 @@ class ControlPanel(object):
 		H = int(main_show.shape[0]* show_ratio)
 
 		min_birdview_show = cv2.resize(min_show, (W, H))
-		min_birdview_show = cv2.copyMakeBorder(min_birdview_show, 10, 10, 10, 10, cv2.BORDER_CONSTANT, value=[0, 0, 0]) # 添加边框
+		min_birdview_show = cv2.copyMakeBorder(min_birdview_show, 10, 10, 10, 10, cv2.BORDER_CONSTANT, value=[0, 0, 0])
 		main_show[0:min_birdview_show.shape[0], -min_birdview_show.shape[1]: ] = min_birdview_show
 		return main_show
 	
