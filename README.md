@@ -137,10 +137,4 @@ pip install -r requirements.txt
 4. Go to the development server at [127.0.0.1:5000](http://127.0.0.1:5000/) in a web browser. Use **Ctrl + C** to exit the program.
 5. Demo setting process is available [here](https://www.youtube.com/watch?v=j-Rbf1Wvl6M&t=4s). Some test data (image and video) can be accessed [here](https://drive.google.com/drive/folders/1BtCvko4PB6_j2ljuAsCYnpVnhCQomFjg?usp=sharing).
 
-## Final Result
-<div align="center">
-  <a href="https://www.youtube.com/watch?v=4aPsZ5zp0sk">
-    <img src="https://img.youtube.com/vi/4aPsZ5zp0sk/0.jpg" alt="Demo Video" width="480" height="360">
-  </a>
-</div>
-
+## Final Result ([Youtube](https://www.youtube.com/watch?v=4aPsZ5zp0sk))
