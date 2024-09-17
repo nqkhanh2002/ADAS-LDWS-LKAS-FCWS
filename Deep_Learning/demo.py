@@ -1,7 +1,7 @@
 import cv2, time
 import numpy as np
 import logging
-# import pycuda.driver as drv
+import pycuda.driver as drv
 
 from taskConditions import TaskConditions, Logger
 from ObjectDetector.yoloDetector import YoloDetector

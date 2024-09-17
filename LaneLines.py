@@ -86,7 +86,7 @@ class LaneLines:
         """
         self.img = img
         # Height of windows - based on nwindows and image shape
-        self.window_height = np.int(img.shape[0]//self.nwindows)
+        self.window_height = int(img.shape[0] // self.nwindows)
 
         # Identify the x and y positions of all nonzero pixels in the image
         self.nonzero = img.nonzero()
