@@ -10,7 +10,7 @@ import glob
 from PIL import Image
 from random import randint
 
-from FindLaneLines import *
+from app.ultils.FindLaneLines import *
 
 IMAGE_FOLDER = 'static/'
 PROCESSED_FOLDER = 'static/Results/Image/'

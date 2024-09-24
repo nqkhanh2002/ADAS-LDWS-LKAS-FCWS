@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>RESULTS</title>
+	<link rel="icon" type="image/x-icon" href="static\car.png">
+	<style>
+		.container {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 20px;
+		}
+		footer {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 50px;
+			background-color: #f9f9f9;
+			text-align: center;
+		}
+		.button-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.button-container button {
+			margin: 10px auto;
+		}
+
+		.image-container {
+			width: 45%;
+			padding: 10px;
+			background-color: #ffffff;
+			border-radius: 10px;
+			box-sizing: border-box;
+		}
+
+		.image-container img {
+			max-width: 100%;
+			height: auto;
+			display: block;
+			margin: 0 auto;
+		}
+
+		.button {
+			margin: 10px auto;
+			background-color: DodgerBlue;
+			color: white;
+			padding: 10px 20px;
+			text-align: center;
+			display: block;
+			font-size: 16px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		.button:hover {
+			background-color: RoyalBlue;
+		}
+
+		.home-link {
+			margin: 10px auto;
+			background-color: DodgerBlue;
+			color: white;
+			padding: 10px 20px;
+			text-align: center;
+			display: block;
+			font-size: 16px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			text-decoration: none;
+		}
+
+		.home-link:hover {
+			background-color: RoyalBlue;
+		}
+	</style>
+</head>
+<body style="background-color:#b3ffb3;">
+	
+	<header>
+		<div style="background-color: rgb(106, 90, 205); border-radius: 10px">
+		  <div
+			style="
+			  background-color: rgb(177, 86, 21);
+			  margin-top: 50px;
+			  height: 100px;
+			  border-radius: 10px;
+			"
+		  >
+			<p
+			  style="
+				font-size: 40px;
+				text-align: center;
+				color: white;
+				font-weight: bold;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 100%;
+			  "
+			>
+			  DETECTED SUCCESSFULLY 
+			</p>
+		  </div>
+		  <p style="font-size:35px; text-align: center;">{{name}}</p>  
+		</div>
+	  </header>
+	  <div class="container">
+		{% if type_file == 'image' %}
+			<div class="image-container">
+				<p style="font-size:25px; text-align: center;">Your Input Image</p>
+				<img src="{{ img_in }}">
+			</div>
+			<div class="container">
+				<button class="button" onclick="goHome()">HOME</button>
+			</div>
+			<div class="image-container">
+				<p style="font-size:25px; text-align: center;">Your Output Image</p>
+				<img src="{{ img }}">
+			</div>
+		{% elif type_file == 'video' %}
+			<div class="image-container">
+				<p style="font-size:25px; text-align: center;">Your Input Video</p>
+				<video id="video-input" width="100%" height="auto" controls autoplay>
+					<source src="{{ video_in }}" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+			<div class="button-container">
+				<button class="button" onclick="compareVideos()">COMPARE</button>
+				<button class="button" onclick="goHome()">HOME</button>
+			</div>
+			<div class="image-container">
+				<p style="font-size:25px; text-align: center;">Your Output Video</p>
+				<video id="video-output" width="100%" height="auto" controls autoplay>
+					<source src="{{ video }}" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+		{% endif %}
+	</div>
+	<footer>
+		<p style="font-weight: bold; text-align: center; margin-top: 20px;">&copy; 2023 Nguyen Quoc Khanh. All rights reserved.</p>
+	</footer>
+</body>
+</html>
+<script>
+    function compareVideos() {
+        var videoInput = document.getElementById("video-input");
+        var videoOutput = document.getElementById("video-output");
+
+        // Dừng và đặt lại video về thời gian 0
+        videoInput.pause();
+        videoOutput.pause();
+        videoInput.currentTime = 0;
+        videoOutput.currentTime = 0;
+
+        // Chạy lại cả hai video
+        videoInput.play();
+        videoOutput.play();
+    }
+	function goHome() {
+        window.location.href = "./";
+    }
+</script>

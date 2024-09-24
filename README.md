@@ -12,7 +12,7 @@
 <h1 align="center">LANE DETECTION APPLICATION IN SELF-DRIVING CAR</h1>
 
 <div align="center">
-  <img src="Image_Resrouces/intro.gif" alt="Result Example" width="800px">
+  <img src="image_resources/intro.gif" alt="Result Example" width="800px">
 </div>
 
 **Lane detection** is a computer vision task that involves identifying the boundaries of driving lanes in video or image scenes. The goal is to accurately locate and track the lane markings in real-time, even in challenging conditions such as low light, glare, or complex road layouts.
@@ -31,7 +31,7 @@ The implementation problem consists of 3 parts:
 
 > **PIPLINE**
 
-![pipline](Image_Resrouces/pipline_1.png)
+![pipline](image_resources/pipline_1.png)
 
 **1. Compute the camera calibration matrix and distortion coefficients.**
 
@@ -110,15 +110,15 @@ The implementation problem consists of 3 parts:
  4. **Results**
  - Deep Learning 
 
-![DemoDL](Image_Resrouces/DL_demo1.gif)
-![DemoDL_1](Image_Resrouces/DL_demo2.gif)
-![DemoDL_2](Image_Resrouces/DemoDL2.gif)
+![DemoDL](image_resources/DL_demo1.gif)
+![DemoDL_1](image_resources/DL_demo2.gif)
+![DemoDL_2](image_resources/DemoDL2.gif)
 
 > **The best type of model for the problem ULFD2_CULANE_RES18/34 and YOLO8l !**
 
 ## Build a user interface (GUI) to deliver a quick demo application
 
-![GUI](Image_Resrouces/GUI.png)
+![GUI](image_resources/GUI.png)
 
 ## Usage
 1. Git clone this repository:

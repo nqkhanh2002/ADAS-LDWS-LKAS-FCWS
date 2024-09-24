@@ -4,14 +4,14 @@ import logging
 import pycuda.driver as drv
 
 from taskConditions import TaskConditions, Logger
-from ObjectDetector.yoloDetector import YoloDetector
-from ObjectDetector.utils import ObjectModelType,  CollisionType
-from ObjectDetector.distanceMeasure import SingleCamDistanceMeasure
+from object_detector.yoloDetector import YoloDetector
+from object_detector.utils import ObjectModelType,  CollisionType
+from object_detector.distanceMeasure import SingleCamDistanceMeasure
 
-from TrafficLaneDetector.ultrafastLaneDetector.ultrafastLaneDetector import UltrafastLaneDetector
-from TrafficLaneDetector.ultrafastLaneDetector.ultrafastLaneDetectorV2 import UltrafastLaneDetectorV2
-from TrafficLaneDetector.ultrafastLaneDetector.perspectiveTransformation import PerspectiveTransformation
-from TrafficLaneDetector.ultrafastLaneDetector.utils import LaneModelType, OffsetType, CurvatureType
+from traffic_lane_detector.ultrafastLaneDetector.ultrafastLaneDetector import UltrafastLaneDetector
+from traffic_lane_detector.ultrafastLaneDetector.ultrafastLaneDetectorV2 import UltrafastLaneDetectorV2
+from traffic_lane_detector.ultrafastLaneDetector.perspectiveTransformation import PerspectiveTransformation
+from traffic_lane_detector.ultrafastLaneDetector.utils import LaneModelType, OffsetType, CurvatureType
 LOGGER = Logger(None, logging.INFO, logging.INFO )
 
 video_path = "./TrafficLaneDetector/temp/test_video.mp4"
