@@ -3,7 +3,8 @@ import numpy as np
 import onnxruntime
 import tensorrt as trt
 import pycuda.driver as cuda
-
+import pycuda.driver as cuda
+cuda.init()
 class EngineBase(abc.ABC):
 	'''
     Currently only supports Onnx/TensorRT framework
@@ -38,30 +39,55 @@ class EngineBase(abc.ABC):
 	def engine_inference(self):
 		return NotImplemented
 
+# class TensorRTBase():
+# 	def __init__(self, engine_file_path):
+# 		self.providers = 'CUDAExecutionProvider'
+# 		self.framework_type = "trt"
+# 		# Create a Context on this device,
+# 		cuda.init()
+# 		device = cuda.Device(0)
+# 		self.cuda_driver_context = device.make_context()
+
+# 		stream = cuda.Stream()
+# 		TRT_LOGGER = trt.Logger(trt.Logger.ERROR)
+# 		runtime = trt.Runtime(TRT_LOGGER)
+# 		# Deserialize the engine from file
+# 		with open(engine_file_path, "rb") as f:
+# 			engine = runtime.deserialize_cuda_engine(f.read())
+
+# 		self.context =  self._create_context(engine)
+# 		self.dtype = trt.nptype(engine.get_binding_dtype(0)) 
+# 		self.host_inputs, self.cuda_inputs, self.host_outputs, self.cuda_outputs, self.bindings = self._allocate_buffers(engine)
+
+# 		# Store
+# 		self.stream = stream
+# 		self.engine = engine
+# TENSORRT 10.0
 class TensorRTBase():
 	def __init__(self, engine_file_path):
 		self.providers = 'CUDAExecutionProvider'
 		self.framework_type = "trt"
-		# Create a Context on this device,
-		cuda.init()
+        # Create a Context on this device,
+		# cuda.init()
 		device = cuda.Device(0)
 		self.cuda_driver_context = device.make_context()
 
 		stream = cuda.Stream()
 		TRT_LOGGER = trt.Logger(trt.Logger.ERROR)
 		runtime = trt.Runtime(TRT_LOGGER)
-		# Deserialize the engine from file
+        # Deserialize the engine from file
 		with open(engine_file_path, "rb") as f:
 			engine = runtime.deserialize_cuda_engine(f.read())
 
-		self.context =  self._create_context(engine)
-		self.dtype = trt.nptype(engine.get_binding_dtype(0)) 
+		self.context = self._create_context(engine)
+        # Thay đổi: Sử dụng get_tensor_dtype thay vì get_binding_dtype
+		self.dtype = trt.nptype(engine.get_tensor_dtype(engine.get_tensor_name(0)))
 		self.host_inputs, self.cuda_inputs, self.host_outputs, self.cuda_outputs, self.bindings = self._allocate_buffers(engine)
 
-		# Store
+        # Store
 		self.stream = stream
 		self.engine = engine
-
+	# TENSORRT 8.x
 	def _allocate_buffers(self, engine):
 		"""Allocates all host/device in/out buffers required for an engine."""
 		host_inputs = []
@@ -86,10 +112,38 @@ class TensorRTBase():
 				host_outputs.append(host_mem)
 				cuda_outputs.append(cuda_mem)
 		return host_inputs, cuda_inputs, host_outputs, cuda_outputs, bindings
+	# TENSORRT 10.0
+	# def _allocate_buffers(self, engine):
+	# 	# """Allocates all host/device in/out buffers required for an engine."""
+	# 	host_inputs = []
+	# 	cuda_inputs = []
+	# 	host_outputs = []
+	# 	cuda_outputs = []
+	# 	bindings = []
 
+	# 	for i in range(engine.num_io_tensors):
+	# 		tensor_name = engine.get_tensor_name(i)
+	# 		size = trt.volume(engine.get_tensor_shape(tensor_name))
+	# 		dtype = trt.nptype(engine.get_tensor_dtype(tensor_name))
+			
+	# 		# Allocate host and device buffers
+	# 		host_mem = cuda.pagelocked_empty(size, dtype)
+	# 		cuda_mem = cuda.mem_alloc(host_mem.nbytes)
+			
+	# 		# Append the device buffer to device bindings.
+	# 		bindings.append(int(cuda_mem))
+			
+	# 		# Append to the appropriate list.
+	# 		if engine.get_tensor_mode(tensor_name) == trt.TensorIOMode.INPUT:
+	# 			host_inputs.append(host_mem)
+	# 			cuda_inputs.append(cuda_mem)
+	# 		else:
+	# 			host_outputs.append(host_mem)
+	# 			cuda_outputs.append(cuda_mem)
+	# 	return host_inputs, cuda_inputs, host_outputs, cuda_outputs, bindings
 	def _create_context(self, engine):
 		return engine.create_execution_context()
-
+	# TENSORRT 8.x
 	def inference(self, input_tensor):
 		self.cuda_driver_context.push()
 		# Restore
@@ -115,7 +169,46 @@ class TensorRTBase():
 		# Remove any context from the top of the context stack, deactivating it.
 		self.cuda_driver_context.pop()
 	
-		return host_outputs
+	# # 	return host_outputs
+	# def inference(self, input_tensor):
+	# 	self.cuda_driver_context.push()
+	# 	# Restore
+	# 	stream = self.stream
+	# 	context = self.context
+	# 	engine = self.engine
+	# 	host_inputs = self.host_inputs
+	# 	cuda_inputs = self.cuda_inputs
+	# 	host_outputs = self.host_outputs
+	# 	cuda_outputs = self.cuda_outputs
+		
+	# 	# Copy input image to host buffer
+	# 	np.copyto(host_inputs[0], input_tensor.ravel())
+		
+	# 	# Transfer input data to the GPU.
+	# 	cuda.memcpy_htod_async(cuda_inputs[0], host_inputs[0], stream)
+		
+	# 	# Setup tensor addresses
+	# 	for i in range(engine.num_io_tensors):
+	# 		tensor_name = engine.get_tensor_name(i)
+	# 		if engine.get_tensor_mode(tensor_name) == trt.TensorIOMode.INPUT:
+	# 			context.set_tensor_address(tensor_name, int(cuda_inputs[0]))
+	# 		else:
+	# 			context.set_tensor_address(tensor_name, int(cuda_outputs[0]))
+		
+	# 	# Run inference.
+	# 	context.execute_async_v3(stream_handle=stream.handle)
+		
+	# 	# Transfer predictions back from the GPU.
+	# 	for host_output, cuda_output in zip(host_outputs, cuda_outputs):
+	# 		cuda.memcpy_dtoh_async(host_output, cuda_output, stream)
+		
+	# 	# Synchronize the stream
+	# 	stream.synchronize()
+		
+	# 	# Remove any context from the top of the context stack, deactivating it.
+	# 	self.cuda_driver_context.pop()
+	# 	print(host_outputs)
+	# 	return host_outputs
 	
 class TensorRTEngine(EngineBase, TensorRTBase):
 
@@ -125,21 +218,39 @@ class TensorRTEngine(EngineBase, TensorRTBase):
 		self.engine_dtype = self.dtype
 		self.__load_engine_interface()
 
-	def __load_engine_interface(self):
-		# Get the number of bindings
-		num_bindings = self.engine.num_bindings
+	# def __load_engine_interface(self):
+	# 	# Get the number of bindings
+	# 	num_bindings = self.engine.num_bindings
 
+	# 	self.__input_shape = []
+	# 	self.__input_names = []
+	# 	self.__output_names = []
+	# 	self.__output_shapes = []
+	# 	for i in range(num_bindings):
+	# 		if self.engine.binding_is_input(i):
+	# 			self.__input_shape.append(self.engine.get_binding_shape(i))
+	# 			self.__input_names.append(self.engine.get_binding_name(i))
+	# 			continue
+	# 		self.__output_names.append(self.engine.get_binding_name(i))
+	# 		self.__output_shapes.append(self.engine.get_binding_shape(i))
+	# TENSORRT 10.0
+	def __load_engine_interface(self):
 		self.__input_shape = []
 		self.__input_names = []
 		self.__output_names = []
 		self.__output_shapes = []
-		for i in range(num_bindings):
-			if self.engine.binding_is_input(i):
-				self.__input_shape.append(self.engine.get_binding_shape(i))
-				self.__input_names.append(self.engine.get_binding_name(i))
-				continue
-			self.__output_names.append(self.engine.get_binding_name(i))
-			self.__output_shapes.append(self.engine.get_binding_shape(i))
+		
+		for i in range(self.engine.num_io_tensors):
+			tensor_name = self.engine.get_tensor_name(i)
+			tensor_mode = self.engine.get_tensor_mode(tensor_name)
+			tensor_shape = self.engine.get_tensor_shape(tensor_name)
+			
+			if tensor_mode == trt.TensorIOMode.INPUT:
+				self.__input_shape.append(tensor_shape)
+				self.__input_names.append(tensor_name)
+			else:
+				self.__output_names.append(tensor_name)
+				self.__output_shapes.append(tensor_shape)
 
 	def get_engine_input_shape(self):
 		return self.__input_shape[0]

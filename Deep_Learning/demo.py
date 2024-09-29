@@ -25,15 +25,15 @@ LOGGER = Logger(None, logging.INFO, logging.INFO )
 # D:\VinBigData_Training_2024\Computer_Vision\FinalProject\ADAS-LDWS-LKAS-FCWS\computer_vision\static\Test_Video\demo-2.mp4
 
 print(os.getcwd())
-# video_path = "../computer_vision/static/Test_Video/demo-2.mp4"
-video_path = "../computer_vision/static/Test_Video/video_test_01.mp4"
+video_path = "../computer_vision/static/Test_Video/demo-2.mp4"
+# video_path = "../computer_vision/static/Test_Video/video_test_01.mp4"
 lane_config = {
-	"model_path": "./TrafficLaneDetector/models/trt_model/tusimple_res18.trt",
-	"model_type" : LaneModelType.UFLDV2_TUSIMPLE
+	"model_path": "./TrafficLaneDetector/models/trt_model/culane_res34.trt",
+	"model_type" : LaneModelType.UFLDV2_CULANE
 }
 
 object_config = {
-	"model_path": './ObjectDetector/models/trt_model/yolov10s.trt',
+	"model_path": './ObjectDetector/models/trt_model/yolov10n.trt',
 	"model_type" : ObjectModelType.YOLOV10,
 	"classes_path" : './ObjectDetector/models/coco_label.txt',
 	"box_score" : 0.4,
@@ -248,7 +248,7 @@ if __name__ == "__main__":
 
 	# lane detection model
 	LOGGER.info("Detector Model Type : {}".format(lane_config["model_type"].name))
-	print(lane_config)
+	# print(lane_config)
 	if ("UFLDV2" in lane_config["model_type"].name) :
 		UltrafastLaneDetectorV2.set_defaults(lane_config)
 		laneDetector = UltrafastLaneDetectorV2(logger=LOGGER)
@@ -302,8 +302,8 @@ if __name__ == "__main__":
 				transformView.updateTransformParams(*laneDetector.lane_info.lanes_points[1:3], analyzeMsg.transform_status)
 			birdview_show = transformView.transformToBirdView(frame_show)
 			# print(birdview_show.shape)
-			for lanes_point in laneDetector.lane_info.lanes_points:
-				print(lanes_point)
+			# for lanes_point in laneDetector.lane_info.lanes_points:
+			# 	print(lanes_point)
 			birdview_lanes_points = [transformView.transformToBirdViewPoints(lanes_point) for lanes_point in laneDetector.lane_info.lanes_points]
 			# print(birdview_lanes_points)
 
