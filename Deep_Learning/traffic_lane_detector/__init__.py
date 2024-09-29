@@ -1,2 +1,0 @@
-from traffic_lane_detector.ultrafastLaneDetector import *
-from .ultrafastLaneDetector import ultrafastLaneDetector, ultrafastLaneDetectorV2

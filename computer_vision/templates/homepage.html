@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LANE DETECTION - NQK</title>
+    <link rel="icon" type="image/png" href="../static/car.png">
+    <style>
+      body {
+        background: url(https://raw.githubusercontent.com/nqkhanh2002/Lane-Detection-for-Self-Driving-Cars/main/image_resources/background.png);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        height: 100vh;
+        
+      }
+
+      .container {
+		
+        background-color: rgb(106, 90, 205);
+        border-radius: 10px;
+        padding: 50px;
+      }
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #f9f9f9;
+        text-align: center;
+        
+      }
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <div style="background-color: rgb(106, 90, 205); border-radius: 10px">
+        <div
+          style="
+            background-color: rgb(177, 86, 21);
+            margin-top: 50px;
+            height: 100px;
+            border-radius: 10px;
+          "
+        >
+          <p
+            style="
+              font-size: 40px;
+              text-align: center;
+              color: white;
+              font-weight: bold;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: 100%;
+            "
+          >
+            LANE DETECTION FOR SELF-DRIVING CAR
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div>
+      <form action="/result" method="POST" enctype="multipart/form-data">
+        <input
+          style="
+            margin: auto;
+            margin-top: 15px;
+            background-color: DodgerBlue;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            display: block;
+            font-size: 16px;
+            margin-bottom: 15px;
+          "
+          type="file"
+          name="file"
+          accept="image/*,video/*"
+        />
+        <input
+          style="
+            margin: auto;
+            margin-top: 15px;
+            background-color: DodgerBlue;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            display: block;
+            font-size: 16px;
+            margin-bottom: 15px;
+          "
+          type="submit"
+          value="Upload and Detect Lane Lines"
+        />
+      </form>
+    </div>
+    <footer>
+      <p style="font-weight: bold; text-align: center; margin-top: 20px;">&copy; 2024 Nguyen Quoc Khanh. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

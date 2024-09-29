@@ -7,3 +7,7 @@ Procfile
 *.pyc
 *.pt
 *.onnx
+# Ignore TensorRT model files
+*.trt
+*.engine
+*.pth

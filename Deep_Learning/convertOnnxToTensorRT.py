@@ -10,13 +10,15 @@ import sys
 takes in onnx model
 converts to tensorrt
 """
-
+model_onnx = 'tusimple_res34'
 if __name__ == '__main__':
-	onnx_model_path = "./ObjectDetector/models/yolov8m-coco.onnx"
-	trt_model_path = "./ObjectDetector/models/yolov8m-coco.trt"
+	# onnx_model_path = f"D:/VinBigData_Training_2024/Computer_Vision/FinalProject/ADAS-LDWS-LKAS-FCWS/deep_learning/object_detector/models/{model_onnx}.onnx"
+	# trt_model_path = f"D:/VinBigData_Training_2024/Computer_Vision/FinalProject/ADAS-LDWS-LKAS-FCWS/deep_learning/object_detector/models/trt_model/{model_onnx}.trt"
+	onnx_model_path = f"D:/VinBigData_Training_2024/Computer_Vision/FinalProject/ADAS-LDWS-LKAS-FCWS/deep_learning/traffic_lane_detector/models/{model_onnx}.onnx"
+	trt_model_path = f"D:/VinBigData_Training_2024/Computer_Vision/FinalProject/ADAS-LDWS-LKAS-FCWS/deep_learning/traffic_lane_detector/models/trt_model/{model_onnx}.trt"
 
 	if not os.path.isfile(onnx_model_path):
-		print("File=[ %s ] is not exist. Please check it !" %onnx_model_path )
+		print("File=[%s] is not exist. Please check it !" %onnx_model_path )
 		sys.exit()
 
 	logger = trt.Logger(trt.Logger.INFO)
@@ -53,7 +55,11 @@ if __name__ == '__main__':
 		for out in outputs:
 			print(f'output "{out.name}" with shape {out.shape} and dtype {out.dtype}')
 
-		engine = builder.build_engine(network, config)
+		engine = builder.build_serialized_network(network, config)
+		# The engine is already serialized, no need to deserialize
+		# If deserialization is needed later, import tensorrt as trt and use:
+		runtime = trt.Runtime(logger)
+		engine = runtime.deserialize_cuda_engine(engine)
 		print('Completed creating engine.')
 		
 		with open(trt_model_path, 'wb') as f:
