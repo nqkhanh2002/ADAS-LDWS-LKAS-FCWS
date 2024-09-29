@@ -207,7 +207,7 @@ class TensorRTBase():
 		
 		# Remove any context from the top of the context stack, deactivating it.
 		self.cuda_driver_context.pop()
-
+		print(host_outputs)
 		return host_outputs
 	
 class TensorRTEngine(EngineBase, TensorRTBase):

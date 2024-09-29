@@ -164,7 +164,7 @@ class TaskConditions(object):
 
 		if (self.curvature_msg == CurvatureType.UNKNOWN and self.offset_msg == OffsetType.UNKNOWN) :
 			self.toggle_oscillator_status = [False, False]
-
+		# print(self.toggle_status)
 		if self.toggle_status != self.transform_status :
 			self.transform_status = self.toggle_status
 			self.toggle_status = None

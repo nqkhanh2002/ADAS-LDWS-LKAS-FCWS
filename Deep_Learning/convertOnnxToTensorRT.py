@@ -10,7 +10,7 @@ import sys
 takes in onnx model
 converts to tensorrt
 """
-model_onnx = 'tusimple_res34'
+model_onnx = ''
 if __name__ == '__main__':
 	# onnx_model_path = f"D:/VinBigData_Training_2024/Computer_Vision/FinalProject/ADAS-LDWS-LKAS-FCWS/deep_learning/object_detector/models/{model_onnx}.onnx"
 	# trt_model_path = f"D:/VinBigData_Training_2024/Computer_Vision/FinalProject/ADAS-LDWS-LKAS-FCWS/deep_learning/object_detector/models/trt_model/{model_onnx}.trt"

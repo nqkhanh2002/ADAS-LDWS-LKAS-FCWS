@@ -1,3 +1,9 @@
+# import pycuda.autoinit
+# import pycuda.driver as drv
+
+# Your CUDA operations here
+
+
 import cv2, time
 import numpy as np
 import logging
@@ -19,10 +25,11 @@ LOGGER = Logger(None, logging.INFO, logging.INFO )
 # D:\VinBigData_Training_2024\Computer_Vision\FinalProject\ADAS-LDWS-LKAS-FCWS\computer_vision\static\Test_Video\demo-2.mp4
 
 print(os.getcwd())
-video_path = "../computer_vision/static/Test_Video/demo-2.mp4"
+# video_path = "../computer_vision/static/Test_Video/demo-2.mp4"
+video_path = "../computer_vision/static/Test_Video/video_test_01.mp4"
 lane_config = {
-	"model_path": "./TrafficLaneDetector/models/trt_model/culane_res18.trt",
-	"model_type" : LaneModelType.UFLDV2_CULANE
+	"model_path": "./TrafficLaneDetector/models/trt_model/tusimple_res18.trt",
+	"model_type" : LaneModelType.UFLDV2_TUSIMPLE
 }
 
 object_config = {
@@ -285,18 +292,25 @@ if __name__ == "__main__":
 			lane_time = time.time()
 			laneDetector.DetectFrame(frame)
 			lane_infer_time = round(time.time() - lane_time, 4)
-
+			
 			#========================= Analyze Status ========================
 			distanceDetector.updateDistance(objectDetector.object_info)
 			vehicle_distance = distanceDetector.calcCollisionPoint(laneDetector.lane_info.area_points)
-
-			if (analyzeMsg.CheckStatus() and laneDetector.lane_info.area_status ) :
+			# print(analyzeMsg.CheckStatus())
+			# print(laneDetector.lane_info.area_status)
+			if (analyzeMsg.CheckStatus() and laneDetector.lane_info.area_status):
 				transformView.updateTransformParams(*laneDetector.lane_info.lanes_points[1:3], analyzeMsg.transform_status)
 			birdview_show = transformView.transformToBirdView(frame_show)
-
+			# print(birdview_show.shape)
+			for lanes_point in laneDetector.lane_info.lanes_points:
+				print(lanes_point)
 			birdview_lanes_points = [transformView.transformToBirdViewPoints(lanes_point) for lanes_point in laneDetector.lane_info.lanes_points]
-			(vehicle_direction, vehicle_curvature) , vehicle_offset = transformView.calcCurveAndOffset(birdview_show, *birdview_lanes_points[1:3])
+			# print(birdview_lanes_points)
 
+
+
+			(vehicle_direction, vehicle_curvature) , vehicle_offset = transformView.calcCurveAndOffset(birdview_show, *birdview_lanes_points[1:3])
+			# print(vehicle_direction, vehicle_curvature, vehicle_offset)
 			analyzeMsg.UpdateCollisionStatus(vehicle_distance, laneDetector.lane_info.area_status)
 			analyzeMsg.UpdateOffsetStatus(vehicle_offset)
 			analyzeMsg.UpdateRouteStatus(vehicle_direction, vehicle_curvature)
@@ -304,6 +318,9 @@ if __name__ == "__main__":
 			#========================== Draw Results =========================
 			transformView.DrawDetectedOnBirdView(birdview_show, birdview_lanes_points, analyzeMsg.offset_msg)
 			if (LOGGER.clevel == logging.DEBUG) : transformView.DrawTransformFrontalViewArea(frame_show)
+			# print(frame_show)
+			# print(analyzeMsg.offset_msg)
+			# print(laneDetector.lane_info.area_status)
 			laneDetector.DrawDetectedOnFrame(frame_show, analyzeMsg.offset_msg)
 			laneDetector.DrawAreaOnFrame(frame_show, displayPanel.CollisionDict[analyzeMsg.collision_msg])
 			objectDetector.DrawDetectedOnFrame(frame_show)
@@ -324,3 +341,5 @@ if __name__ == "__main__":
 	vout.release()
 	cap.release()
 	cv2.destroyAllWindows()
+	# At the end of your program:
+	# drv.Context.pop()

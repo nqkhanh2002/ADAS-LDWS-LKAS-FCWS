@@ -185,6 +185,7 @@ class UltrafastLaneDetectorV2(LaneDetectBase):
 		# Perform inference on the image
 		output = self.engine.engine_inference(input_tensor)
 
+		# print(output)
 		# Process output data
 		self.lane_info.lanes_points, self.lane_info.lanes_status = self.__process_output(output, self.cfg)
 		
