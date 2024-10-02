@@ -25,10 +25,10 @@ LOGGER = Logger(None, logging.INFO, logging.INFO )
 # D:\VinBigData_Training_2024\Computer_Vision\FinalProject\ADAS-LDWS-LKAS-FCWS\computer_vision\static\Test_Video\demo-2.mp4
 
 print(os.getcwd())
-video_path = "../computer_vision/static/Test_Video/demo-2.mp4"
-# video_path = "../computer_vision/static/Test_Video/video_test_01.mp4"
+# video_path = "../computer_vision/static/Test_Video/demo-2.mp4"
+video_path = "../computer_vision/static/Test_Video/video_test_01.mp4"
 lane_config = {
-	"model_path": "./TrafficLaneDetector/models/trt_model/culane_res34.trt",
+	"model_path": "./TrafficLaneDetector/models/trt_model/culane_res18.trt",
 	"model_type" : LaneModelType.UFLDV2_CULANE
 }
 
@@ -39,6 +39,9 @@ object_config = {
 	"box_score" : 0.4,
 	"box_nms_iou" : 0.5
 }
+
+
+
 
 # Priority : FCWS > LDWS > LKAS
 class ControlPanel(object):

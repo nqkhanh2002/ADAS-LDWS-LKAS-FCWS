@@ -11,12 +11,13 @@ class SingleCamDistanceMeasure(object):
 					"person" : (160*INCH, 50*INCH), 
 					"bicycle" : (98*INCH, 65*INCH),
 					"motorbike" : (100*INCH, 100*INCH),
+					"bycicle" : (100*INCH, 100*INCH),
 					"car" : (150*INCH, 180*INCH ),
 					"bus" : (319*INCH, 250*INCH), 
 					"truck" : (346*INCH, 250*INCH), 
 				 }
 
-	def __init__(self, object_list: list = ["person", "bicycle", "car", "motorbike", "bus", "truck"] ):
+	def __init__(self, object_list: list = ["person", "bicycle", "car", "motorbike", "bus", "truck", "bycicle"]):
 		self.object_list = object_list
 		self.f = 100 # focal length
 		self.distance_points = []

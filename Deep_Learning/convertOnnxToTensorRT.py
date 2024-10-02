@@ -17,8 +17,8 @@ converts to tensorrt
 """
 
 parser = argparse.ArgumentParser(description='https://github.com/nqkhanh2002/ADAS-LDWS-LKAS-FCWS')
-parser.add_argument('--input_onnx_model', '-i', default="./TrafficLaneDetector/models/tus_res34.onnx", type=str, help='Onnx model path.')
-parser.add_argument('--output_trt_model', '-o', default="./TrafficLaneDetector/models/trt_model/culane_res34.trt", type=str, help='Tensorrt model path.')
+parser.add_argument('--input_onnx_model', '-i', default="./TrafficLaneDetector/models/tusimple_res34.onnx", type=str, help='Onnx model path.')
+parser.add_argument('--output_trt_model', '-o', default="./TrafficLaneDetector/models/trt_model/tusimple_res34.trt", type=str, help='Tensorrt model path.')
 
 
 # parser.add_argument('--input_onnx_model', '-i', default="./ObjectDetector/models/yolov10n.onnx", type=str, help='Onnx model path.')
