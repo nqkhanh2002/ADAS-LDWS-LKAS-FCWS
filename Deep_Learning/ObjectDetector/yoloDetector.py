@@ -51,8 +51,8 @@ class YoloLiteParameters():
 
 class YoloDetector(ObjectDetectBase, YoloLiteParameters):
 	_defaults = {
-		"model_path": './models/yolov5n-coco.onnx',
-		"model_type" : ObjectModelType.YOLOV5,
+		"model_path": './models/yolov10l.onnx',
+		"model_type" : ObjectModelType.YOLOV10,
 		"classes_path" : './models/coco_label.txt',
 		"box_score" : 0.4,
 		"box_nms_iou" : 0.45

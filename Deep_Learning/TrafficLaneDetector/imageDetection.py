@@ -5,7 +5,7 @@ from ufldDetector.ultrafastLaneDetector import UltrafastLaneDetector
 from ufldDetector.ultrafastLaneDetectorV2 import UltrafastLaneDetectorV2
 
 
-image_path = "./temp/test3.jpg"
+image_path = "D:/VinBigData_Training_2024/Computer_Vision/data_road/data_road/training/image_2/um_000001.png"
 model_path = "models/culane_res18.onnx"
 # model_type = LaneModelType.UFLD_TUSIMPLE
 model_type = LaneModelType.UFLDV2_CULANE

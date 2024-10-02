@@ -17,12 +17,12 @@ converts to tensorrt
 """
 
 parser = argparse.ArgumentParser(description='https://github.com/nqkhanh2002/ADAS-LDWS-LKAS-FCWS')
-parser.add_argument('--input_onnx_model', '-i', default="./TrafficLaneDetector/models/tusimple_res34.onnx", type=str, help='Onnx model path.')
-parser.add_argument('--output_trt_model', '-o', default="./TrafficLaneDetector/models/trt_model/tusimple_res34.trt", type=str, help='Tensorrt model path.')
+# parser.add_argument('--input_onnx_model', '-i', default="./TrafficLaneDetector/models/tusimple_res34.onnx", type=str, help='Onnx model path.')
+# parser.add_argument('--output_trt_model', '-o', default="./TrafficLaneDetector/models/trt_model/tusimple_res34.trt", type=str, help='Tensorrt model path.')
 
 
-# parser.add_argument('--input_onnx_model', '-i', default="./ObjectDetector/models/yolov10n.onnx", type=str, help='Onnx model path.')
-# parser.add_argument('--output_trt_model', '-o', default="./ObjectDetector/models/trt_model/yolov10n.trt", type=str, help='Tensorrt model path.')
+parser.add_argument('--input_onnx_model', '-i', default="./ObjectDetector/models/yolov8x.onnx", type=str, help='Onnx model path.')
+parser.add_argument('--output_trt_model', '-o', default="./ObjectDetector/models/trt_model/yolov8x.trt", type=str, help='Tensorrt model path.')
 # parser.add_argument("--calib_image_dir", default=None, type=Path, help="The calibrate data required for conversion to int8, if None will use dynamic quantization")
 parser.add_argument('--verbose', action='store_true', default=False, help='TensorRT: verbose log')
 
@@ -93,8 +93,8 @@ class EngineBuilder:
 		print(self.colorstr('magenta', "*"*40))
 
 		print(self.colorstr('👉 Building the TensorRT engine. This would take a while...'))
-		engine = self.builder.build_engine(self.network, self.config)  # 没有序列化,<class 'tensorrt.tensorrt.ICudaEngine'>
-		# engine = self.builder.build_serialized_network(network, config) # 已经序列化,类型为:<class 'tensorrt.tensorrt.IHostMemory'
+		engine = self.builder.build_engine(self.network, self.config)  
+		# engine = self.builder.build_serialized_network(network, config) 
 		if engine is not None: print(self.colorstr('👉 Completed creating engine.'))
 		
 		try:
